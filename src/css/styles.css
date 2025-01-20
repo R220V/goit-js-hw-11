@@ -1,3 +1,9 @@
+/* @import 'izitoast/dist/css/iziToast.min.css'; */
+@import url('./loader.css');
+
+@import 'izitoast/dist/css/iziToast.min.css';
+@import 'simplelightbox/dist/simple-lightbox.min.css';
+
 body {
   background-color: #416368c0;
 }
@@ -35,22 +41,75 @@ img {
   max-width: 100%;
   height: auto;
 }
+
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 18px;
 }
 .gallery-card {
   width: calc((100% - 48px) / 3);
 }
+.gallery-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border: solid 1px #09017cad;
+  border-radius: 6px;
+  background-color: #5d676e38;
+}
+.gallery-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 2px;
+  border: solid 1px #09017cad;
+  border-radius: 6px;
+  background-color: #5d676e38;
+}
+.gallery-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.gallery-title {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: rgb(43, 70, 71);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+.gallery-count {
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #1e226b;
+}
 
-*,
-::before,
-::after {
-  box-sizing: border-box;
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  width: 100%;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
 }
 .container {
-  width: 1200px;
+  width: 1600px;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
@@ -66,7 +125,7 @@ img {
 }
 .input-search {
   background-color: #f5f3ed;
-  font-size: 22px;
+  font-size: 20px;
   flex-grow: 1;
   height: 50px;
   padding-left: 15px;
@@ -82,8 +141,4 @@ img {
   text-transform: uppercase;
   cursor: pointer;
   margin-left: 5px;
-}
-.btn-search :hover {
-  background-color: rgb(30, 255, 0);
-  color: brown;
 }

@@ -1,16 +1,19 @@
 export const fetchPhotosByQuery = searchedQuery => {
   const searchParams = new URLSearchParams({
-    query: searchedQuery,
-    client_id: 'VgVom1zWqHLL7Rt7mBXLC5YqRvQapFz6aLGinkF8ChQ',
-    per_page: 9,
+    q: searchedQuery,
+    key: '48306389-9c3f7e9b102fd2bc2270acf47',
+    image_type: 'photo',
+    orientation: 'horizontal',
+    safesearch: 'true',
+    per_page: '60',
   });
 
-  return fetch(
-    `https://api.unsplash.com/search/photos?${searchParams.toString()}`
-  ).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
+  return fetch(`https://pixabay.com/api/?${searchParams.toString()}`).then(
+    response => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      return response.json();
     }
-    return response.json();
-  });
+  );
 };
