@@ -1,18 +1,24 @@
+// Завантажимо бібліотеки
 import iziToast from 'izitoast';
 import SimpleLightbox from 'simplelightbox';
 
 import { createGalleryCardTemplate } from './js/render-functions';
 import { fetchPhotosByQuery } from './js/pixabay-api';
-
+// Отримуємо посилання на елементи сторінки
 const searchFormEl = document.querySelector('.js-form-search');
 const galleryEl = document.querySelector('.js-gallery');
 const loader = document.querySelector('.loader');
-
+// Ініціалізація SimpleLightbox
+let gallerySLB = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 300,
+});
 //ф-ія викликається при сабміті форми
 const onSearchFormSubmit = event => {
+  // Запобігаємо перезавантаженню сторінки
   event.preventDefault();
-
-  const searchedQuery = event.currentTarget.elements.user_query.value.trim(''); //зчитуємо значення з інпута
+  //зчитуємо значення з інпута, видаляючи пробіли
+  const searchedQuery = event.currentTarget.elements.user_query.value.trim('');
   //перевірка, чи інпут не порожній
   if (searchedQuery === '') {
     iziToast.error({
@@ -25,48 +31,44 @@ const onSearchFormSubmit = event => {
     });
     return;
   }
+  //Видалимо клас is-hidden для показу індикатора завантаження
   loader.classList.remove('is-hidden');
-
   fetchPhotosByQuery(searchedQuery) //запит на сервер
     .then(data => {
+      //перевірка на неіснуюче слово в інпуті
+      //Якщо на серверінемає зображень за таким пошуком, відображається сповіщення про помилку.
       if (data.total === 0) {
-        //перевірка на неіснуюче слово в інпуті
         iziToast.error({
           title: 'Error',
           messageColor: 'Purple',
           color: 'red',
           position: 'topRight',
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
+          messageSize: '20',
+          message: 'Sorry, there are no images. Please try again!',
         });
-
         galleryEl.innerHTML = ''; //почистили галерею
-
         searchFormEl.reset(); //почистили імпут
-
         return;
       }
       //генеруємо розмітку
       const galleryTemplate = data.hits
         .map(el => createGalleryCardTemplate(el))
         .join('');
-      //відмальовуємо на сторінці
+      //відмальовуємо зображення на сторінці
       galleryEl.innerHTML = galleryTemplate;
-
+      //ховаємо індикатор завантаження
       loader.classList.add('is-hidden');
-
-      // Ініціалізація SimpleLightbox
-      let gallerySLB = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 300,
-      });
-      gallery.refresh();
+      //оновлюємо галерею SimpleLightbox
+      gallerySLB.refresh();
     })
+    //Якщо є помилка, ховається індикатор завантаження, а помилка виводиться в консоль.
     .catch(err => {
       loader.style.display = 'none';
-
       console.log(err);
     });
+  //очистимо форму після завершення запиту
   searchFormEl.reset();
 };
+
+// Додаємо обробник події на форму пошуку
 searchFormEl.addEventListener('submit', onSearchFormSubmit);
